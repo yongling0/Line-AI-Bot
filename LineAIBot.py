@@ -10,7 +10,7 @@ import os
 import requests
 from linebot.models import *
 
-app = Flask(__name__)
+LineAIBot = Flask(__name__)
 
 # LINE credentials
 LINE_CHANNEL_ACCESS_TOKEN = 'Mi0rTHp6hcztkvqbwyqOl/ogu6SKI4471vk9jE0VpO3RUjO1efUzdwdrG/9838WgKTEW5GdPMFGkwTDRfuPlW4ywc+tXOT8MxPMGzRSY7kr2PAuQpnl0zZTPkSm93aBH8rxHgGD15QLY12IhWNvYFwdB04t89/1O/w1cDnyilFU='
@@ -40,7 +40,7 @@ cities = [
     "金門縣", "澎湖縣", "連江縣"
 ]
 
-@app.route("/webhook", methods=['POST'])
+@LineAIBot.route("/webhook", methods=['POST'])
 def webhook():
     signature = request.headers.get('X-Line-Signature', '')
     body = request.get_data(as_text=True)
@@ -272,7 +272,7 @@ def store_history(user_id, user_msg, bot_reply):
 
 
 # RESTful API：取得對話紀錄
-@app.route("/history/<user_id>", methods=["GET"])
+@LineAIBot.route("/history/<user_id>", methods=["GET"])
 def get_history(user_id):
     #print("使用者：", user_id)
     #print("目前對話紀錄：", chat_history)
@@ -287,7 +287,7 @@ def get_history(user_id):
 
 
 # RESTful API：刪除對話紀錄
-@app.route("/history/<user_id>", methods=["DELETE"])
+@LineAIBot.route("/history/<user_id>", methods=["DELETE"])
 def delete_history(user_id):
     if user_id in chat_history:
         del chat_history[user_id]
@@ -296,4 +296,4 @@ def delete_history(user_id):
         return jsonify({"message": "查無此使用者紀錄"}), 404
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    LineAIBot.run(port=5000)
